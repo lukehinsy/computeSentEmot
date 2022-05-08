@@ -12,11 +12,11 @@ computeSentEmot <- function(DATASET, ID, textcol) {
     dplyr::select(element_id, {{textcol}}) %>% 
     dplyr::mutate(Exp_split = sentimentr::get_sentences({{textcol}}))
   
-  DATASET_sent <- DATASET_spl %$% 
+  DATASET_sent <- DATASET_spl %${{% 
     sentimentr::sentiment_by(Exp_split) %>% 
     dplyr::right_join(DATASET, by=c('element_id'))
   
-  DATASET_sent <- DATASET_sent[,c(1,5,6,7,8,2,4,3)]
+  DATASET_sent <- DATASET_sent %>% select(element_id, {{ID}}, {{textcol}}, word_count, ave_sentiment, sd_sentiment)
   
   DATASET_emot <- DATASET_spl %$% 
     sentimentr::emotion_by(Exp_split) %>% 
